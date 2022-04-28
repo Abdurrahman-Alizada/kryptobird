@@ -16,7 +16,18 @@ contract ERC721 {
         return owner != address(0); // check if owner exist and true or false
     }
 
-    function _mint(address to, uint256 tokenId) internal {
+    function balanceOf( address _owner ) public view returns(uint256) {
+      require(_owner != address(0), "Empty owner qurey for non-existing NFT");
+      return _OwnedTokenCount[_owner];
+    }
+
+    function ownerOf( uint256 _tokenId ) public view returns(address) {
+        address owner = _tokenOwner[_tokenId]; 
+        require( owner != address(0), "Empty owner query for non-existing NFT");
+        return owner;
+    }
+
+    function _mint(address to, uint256 tokenId) internal virtual {
         require(to != address(0), "ERC721: Minting to the zero address");
         require(!_exist(tokenId), "ERC721: Already minted");
         _tokenOwner[tokenId] = to;
